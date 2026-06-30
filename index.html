@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NexusStore | E-Commerce Premium</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .page { display: none; }
+        .page.active { display: block; animation: fadeIn 0.4s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 min-h-screen flex flex-col">
+
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <div class="flex items-center gap-2 cursor-pointer" onclick="navigateTo('home')">
+                <div class="bg-blue-600 text-white p-2.5 rounded-xl shadow-md shadow-blue-200">
+                    <i class="fa-solid fa-bolt text-xl"></i>
+                </div>
+                <span class="text-2xl font-black tracking-tight text-gray-900">NEXUS<span class="text-blue-600">STORE</span></span>
+            </div>
+            
+            <nav class="hidden md:flex space-x-8 font-medium">
+                <a onclick="navigateTo('home')" id="nav-home" class="text-blue-600 border-b-2 border-blue-600 pb-1 cursor-pointer transition">Início</a>
+                <a onclick="navigateTo('produtos')" id="nav-produtos" class="text-gray-500 hover:text-blue-600 pb-1 cursor-pointer transition">Produtos</a>
+                <a onclick="navigateTo('sobre')" id="nav-sobre" class="text-gray-500 hover:text-blue-600 pb-1 cursor-pointer transition">Sobre Nós</a>
+                <a onclick="navigateTo('contato')" id="nav-contato" class="text-gray-500 hover:text-blue-600 pb-1 cursor-pointer transition">Contato</a>
+            </nav>
+
+            <div class="flex items-center gap-4">
+                <button onclick="navigateTo('carrinho')" id="nav-carrinho" class="relative bg-gray-100 hover:bg-blue-50 hover:text-blue-600 p-3 rounded-xl transition text-gray-600">
+                    <i class="fa-solid fa-bag-shopping text-lg"></i>
+                    <span id="cart-count" class="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center hidden">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+        <section id="home" class="page active space-y-12">
+            <div class="relative bg-gradient-to-r border border-gray-100 from-gray-900 to-slate-800 rounded-3xl overflow-hidden shadow-xl text-white">
+                <div class="absolute inset-0 opacity-20 bg-[url('https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=1200')] bg-cover bg-center"></div>
+                <div class="relative max-w-2xl px-8 py-16 sm:px-12 sm:py-24 space-y-6">
+                    <span class="bg-blue-500/20 text-blue-400 text-sm font-semibold px-3 py-1 rounded-full uppercase tracking-wider">Nova Coleção 2026</span>
+                    <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight leading-none">Tecnologia e Estilo no seu Dia a Dia.</h1>
+                    <p class="text-lg text-gray-300">Descubra dispositivos e acessórios premium selecionados para elevar sua rotina com frete grátis.</p>
+                    <button onclick="navigateTo('produtos')" class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-8 py-4 rounded-xl shadow-lg transition transform hover:-translate-y-0.5">Explorar Produtos</button>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                <div class="bg-white p-6 rounded-2xl border border-gray-100 flex items-center gap-4">
+                    <div class="bg-blue-50 text-blue-600 p-4 rounded-xl"><i class="fa-solid fa-truck text-xl"></i></div>
+                    <div><h3 class="font-bold text-gray-900">Frete Rápido</h3><p class="text-sm text-gray-500">Grátis para compras acima de R$ 250</p></div>
+                </div>
+                <div class="bg-white p-6 rounded-2xl border border-gray-100 flex items-center gap-4">
+                    <div class="bg-green-50 text-green-600 p-4 rounded-xl"><i class="fa-solid fa-shield-halved text-xl"></i></div>
+                    <div><h3 class="font-bold text-gray-900">Compra Segura</h3><p class="text-sm text-gray-500">Ambiente 100% criptografado</p></div>
+                </div>
+                <div class="bg-white p-6 rounded-2xl border border-gray-100 flex items-center gap-4">
+                    <div class="bg-purple-50 text-purple-600 p-4 rounded-xl"><i class="fa-solid fa-headset text-xl"></i></div>
+                    <div><h3 class="font-bold text-gray-900">Suporte 24/7</h3><p class="text-sm text-gray-500">Atendimento humanizado</p></div>
+                </div>
+            </div>
+
+            <div>
+                <div class="flex justify-between items-end mb-6">
+                    <h2 class="text-2xl font-black text-gray-900 tracking-tight">Mais Vendidos</h2>
+                    <button onclick="navigateTo('produtos')" class="text-blue-600 font-semibold hover:underline">Ver Todos <i class="fa-solid fa-arrow-right text-xs"></i></button>
+                </div>
+                <div id="featured-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"></div>
+            </div>
+        </section>
+
+        <section id="produtos" class="page space-y-8">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-4 rounded-2xl border border-gray-100">
+                <div class="relative flex-1">
+                    <i class="fa-solid fa-magnifying-glass absolute left-4 top-3.5 text-gray-400"></i>
+                    <input type="text" id="search-input" oninput="filtrarProdutos()" placeholder="O que você está procurando hoje?" class="w-full bg-gray-50 pl-11 pr-4 py-3 rounded-xl border-none focus:ring-2 focus:ring-blue-500 outline-none">
+                </div>
+                <div class="flex flex-wrap gap-2">
+                    <button onclick="filtrarCategoria('todos')" class="cat-btn bg-blue-600 text-white px-4 py-2.5 rounded-xl font-medium text-sm transition">Todos</button>
+                    <button onclick="filtrarCategoria('eletronicos')" class="cat-btn bg-gray-100 hover:bg-gray-200 text-gray-600 px-4 py-2.5 rounded-xl font-medium text-sm transition">Eletrônicos</button>
+                    <button onclick="filtrarCategoria('audio')" class="cat-btn bg-gray-100 hover:bg-gray-200 text-gray-600 px-4 py-2.5 rounded-xl font-medium text-sm transition">Áudio</button>
+                    <button onclick="filtrarCategoria('acessorios')" class="cat-btn bg-gray-100 hover:bg-gray-200 text-gray-600 px-4 py-2.5 rounded-xl font-medium text-sm transition">Acessórios</button>
+                    <button onclick="filtrarCategoria('casa')" class="cat-btn bg-gray-100 hover:bg-gray-200 text-gray-600 px-4 py-2.5 rounded-xl font-medium text-sm transition">Casa</button>
+                </div>
+            </div>
+
+            <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"></div>
+        </section>
+
+        <section id="sobre" class="page max-w-4xl mx-auto space-y-12">
+            <div class="grid md:grid-cols-2 gap-8 items-center">
+                <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=600" alt="Nossa Equipe" class="rounded-2xl shadow-md object-cover h-80 w-full">
+                <div class="space-y-4">
+                    <span class="text-blue-600 font-bold text-sm tracking-widest uppercase">Quem Somos</span>
+                    <h2 class="text-3xl font-extrabold text-gray-900 tracking-tight">Inovação e compromisso com você.</h2>
+                    <p class="text-gray-600 leading-relaxed">Nascida em 2026, a NexusStore foi criada para conectar as pessoas ao que há de mais moderno no mercado global. Acreditamos que a tecnologia deve ser acessível, prática e entregue sem dores de cabeça.</p>
+                    <p class="text-gray-600 leading-relaxed">Selecionamos cada item do nosso catálogo seguindo rigorosos padrões de testes e qualidade, assegurando uma experiência única de unboxing e usabilidade.</p>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+                <div class="bg-white p-6 rounded-2xl border border-gray-100"><div class="text-blue-600 text-3xl mb-2"><i class="fa-solid fa-bullseye"></i></div><h4 class="font-bold text-lg mb-1">Missão</h4><p class="text-sm text-gray-500">Facilitar o acesso a utilitários e eletrônicos premium de ponta.</p></div>
+                <div class="bg-white p-6 rounded-2xl border border-gray-100"><div class="text-blue-600 text-3xl mb-2"><i class="fa-solid fa-eye"></i></div><h4 class="font-bold text-lg mb-1">Visão</h4><p class="text-sm text-gray-500">Ser o e-commerce de referência nacional em atendimento e rapidez.</p></div>
+                <div class="bg-white p-6 rounded-2xl border border-gray-100"><div class="text-blue-600 text-3xl mb-2"><i class="fa-solid fa-heart"></i></div><h4 class="font-bold text-lg mb-1">Valores</h4><p class="text-sm text-gray-500">Transparência total, respeito ao cliente e inovação constante.</p></div>
+            </div>
+        </section>
+
+        <section id="contato" class="page max-w-5xl mx-auto grid md:grid-cols-3 gap-8">
+            <div class="md:col-span-2 bg-white p-8 rounded-2xl border border-gray-100 shadow-sm space-y-6">
+                <div>
+                    <h2 class="text-2xl font-bold text-gray-900">Envie uma Mensagem</h2>
+                    <p class="text-sm text-gray-500">Responderemos em até 24 horas úteis.</p>
+                </div>
+                <form onsubmit="event.preventDefault(); alert('Mensagem enviada! Entraremos em contato.'); this.reset();" class="space-y-4">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="flex flex-col gap-1">
+                            <label class="text-xs font-bold uppercase text-gray-500">Nome</label>
+                            <input type="text" required placeholder="Seu nome" class="bg-gray-50 p-3 rounded-xl border-none outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <div class="flex flex-col gap-1">
+                            <label class="text-xs font-bold uppercase text-gray-500">E-mail</label>
+                            <input type="email" required placeholder="seu@email.com" class="bg-gray-50 p-3 rounded-xl border-none outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                    </div>
+                    <div class="flex flex-col gap-1">
+                        <label class="text-xs font-bold uppercase text-gray-500">Mensagem</label>
+                        <textarea rows="4" required placeholder="Como podemos te ajudar?" class="bg-gray-50 p-3 rounded-xl border-none outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+                    </div>
+                    <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold p-3.5 rounded-xl shadow-lg transition">Enviar Protocolo</button>
+                </form>
+
+                <div class="pt-6 border-t border-gray-100 space-y-4">
+                    <h3 class="text-lg font-bold text-gray-900">Perguntas Frequentes</h3>
+                    <div class="border border-gray-100 rounded-xl overflow-hidden">
+                        <button onclick="toggleFaq(1)" class="w-full bg-gray-50 p-4 text-left font-semibold flex justify-between items-center text-sm">Qual o prazo de entrega? <i class="fa-solid fa-chevron-down text-xs text-gray-400"></i></button>
+                        <div id="faq-1" class="hidden p-4 text-sm text-gray-600 bg-white border-t border-gray-100">O prazo médio para capitais é de 3 a 7 dias úteis após a postagem do produto.</div>
+                    </div>
+                    <div class="border border-gray-100 rounded-xl overflow-hidden">
+                        <button onclick="toggleFaq(2)" class="w-full bg-gray-50 p-4 text-left font-semibold flex justify-between items-center text-sm">Os produtos possuem garantia? <i class="fa-solid fa-chevron-down text-xs text-gray-400"></i></button>
+                        <div id="faq-2" class="hidden p-4 text-sm text-gray-600 bg-white border-t border-gray-100">Sim! Todos os nossos produtos eletrônicos contam com garantia de 12 meses direto de fábrica.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="space-y-6">
+                <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm space-y-4">
+                    <h3 class="font-bold text-lg text-gray-900">Canais Diretos</h3>
+                    <div class="flex gap-3 items-start"><i class="fa-brands fa-whatsapp text-green-500 text-xl mt-0.5"></i><div><p class="font-semibold text-sm">WhatsApp</p><p class="text-xs text-gray-500">(11) 99999-8888</p></div></div>
+                    <div class="flex gap-3 items-start"><i class="fa-solid fa-envelope text-blue-500 text-xl mt-0.5"></i><div><p class="font-semibold text-sm">E-mail</p><p class="text-xs text-gray-500">ajuda@nexusstore.com</p></div></div>
+                </div>
+                <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm space-y-2">
+                    <h3 class="font-bold text-sm text-gray-900 uppercase tracking-wider text-gray-400">Horários</h3>
+                    <p class="text-sm font-medium">Segunda a Sexta: <span class="text-gray-500 font-normal">09h às 18h</span></p>
+                    <p class="text-sm font-medium">Sábados: <span class="text-gray-500 font-normal">09h às 13h</span></p>
+                </div>
+            </div>
+        </section>
+
+        <section id="carrinho" class="page">
+            <h2 class="text-2xl font-black text-gray-900 mb-6 tracking-tight">Seu Carrinho</h2>
+            <div id="cart-wrapper" class="grid lg:grid-cols-3 gap-8">
+                <div class="lg:col-span-2 space-y-4" id="cart-items-container"></div>
+                
+                <div id="cart-summary" class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm h-fit space-y-6"></div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-gray-900 text-gray-400 mt-16 border-t border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="space-y-4">
+                <span class="text-xl font-black tracking-tight text-white">NEXUS<span class="text-blue-500">STORE</span></span>
+                <p class="text-sm">A melhor experiência de compra digital, focada em segurança, qualidade e velocidade de entrega.</p>
+            </div>
+            <div class="space-y-2">
+                <h4 class="text-white font-bold text-sm uppercase tracking-wider">Links Rápidos</h4>
+                <ul class="space-y-1 text-sm">
+                    <li><a onclick="navigateTo('produtos')" class="hover:text-white cursor-pointer">Catálogo de Produtos</a></li>
+                    <li><a onclick="navigateTo('sobre')" class="hover:text-white cursor-pointer">Nossa História</a></li>
+                    <li><a onclick="navigateTo('contato')" class="hover:text-white cursor-pointer">Central de Ajuda</a></li>
+                </ul>
+            </div>
+            <div class="text-sm space-y-2">
+                <h4 class="text-white font-bold text-sm uppercase tracking-wider">Segurança</h4>
+                <p><i class="fa-solid fa-lock text-green-500 mr-1"></i> Certificado SSL Criptografado</p>
+                <p>&copy; 2026 NexusStore. CNPJ: 00.000.000/0001-00</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Banco de Dados de Produtos Fictício com Imagens Unsplash de Alta Resolução
+        const produtosDB = [
+            { id: 1, nome: "Smartphone Galaxy Premium X", preco: 2899.90, categoria: "eletronicos", img: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=500", desc: "Tela AMOLED 6.7', 128GB, Câmera Tripla 50MP", destaque: true },
+            { id: 2, nome: "Notebook Ultra Slim Intel i5", preco: 4199.00, categoria: "eletronicos", img: "https://images.unsplash.com/photo-1496181130204-755241544e35?w=500", desc: "16GB RAM, 512GB SSD de Altíssima Velocidade", destaque: true },
+            { id: 3, nome: "Fone Bluetooth Active Noise Cancelling", preco: 349.90, category: "audio", categoria: "audio", img: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500", desc: "Isolamento acústico inteligente e bateria de 40h", destaque: true },
+            { id: 4, nome: "Caixa de Som Portátil Waterproof", preco: 199.90, categoria: "audio", img: "https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=500", desc: "Resistência à água IPX7 e som surround 360°", destaque: false },
+            { id: 5, nome: "Relógio Minimalista Casual Couro", preco: 159.90, categoria: "acessorios", img: "https://images.unsplash.com/photo-1524592094714-0f0654e20314?w=500", desc: "Caixa em aço inoxidável e vidro mineral", destaque: true },
+            { id: 6, nome: "Mochila Antifurto Tech Smart", preco: 220.00, categoria: "acessorios", img: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=500", desc: "Porta USB de carregamento integrada e travas em aço", destaque: false },
+            { id: 7, nome: "Luminária Inteligente Wi-Fi RGB", preco: 129.90, categoria: "casa", img: "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=500", desc: "Compatível com comandos Alexa e Google Assistant", destaque: false },
+            { id: 8, nome: "Cafeteira Espresso Italiana Pro", preco: 849.00, categoria: "casa", img: "https://images.unsplash.com/photo-1517256064527-09c53b2d0c6f?w=500", desc: "Pressão de 15 Bars e bico vaporizador de leite", destaque: false }
+        ];
+
+        // Estado Global da Aplicação (Memória Volátil)
+        let carrinho = [];
+        let categoriaAtual = 'todos';
+
+        // Roteador SPA (Single Page Application)
+        function navigateTo(pageId) {
+            document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+            document.querySelectorAll('nav a').forEach(link => {
+                link.classList.remove('text-blue-600', 'border-b-2', 'border-blue-600');
+                link.classList.add('text-gray-500');
+            });
+            
+            document.getElementById(pageId).classList.add('active');
+            const activeNav = document.getElementById(`nav-${pageId}`);
+            if(activeNav) {
+                activeNav.classList.remove('text-gray-500');
+                activeNav.classList.add('text-blue-600', 'border-b-2', 'border-blue-600');
+            }
+
+            if(pageId === 'carrinho') renderizarCarrinho();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Construtor de Cards de Produto (Reutilizável)
+        function gerarProductCard(prod) {
+            return `
+                <div class="bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-md transition flex flex-col group">
+                    <div class="relative overflow-hidden bg-gray-100 aspect-square">
+                        <img src="${prod.img}" alt="${prod.nome}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                        <span class="absolute top-3 left-3 bg-white text-gray-800 text-xs font-bold px-2.5 py-1 rounded-lg uppercase shadow-sm">${prod.categoria}</span>
+                    </div>
+                    <div class="p-5 flex-1 flex flex-col justify-between space-y-4">
+                        <div>
+                            <h3 class="font-bold text-gray-900 group-hover:text-blue-600 transition text-base line-clamp-1">${prod.nome}</h3>
+                            <p class="text-xs text-gray-500 mt-1 line-clamp-2">${prod.desc}</p>
+                        </div>
+                        <div>
+                            <p class="text-xl font-black text-gray-900 mb-3">R$ ${prod.preco.toFixed(2).replace('.',',')}</p>
+                            <button onclick="adicionarAoCarrinho(${prod.id})" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 px-4 rounded-xl transition flex items-center justify-center gap-2 text-sm shadow-md shadow-blue-100">
+                                <i class="fa-solid fa-cart-plus"></i> Adicionar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Renderizadores de Grid
+        function inicializarCatalogo() {
+            const gridGeral = document.getElementById('products-grid');
+            const gridDestaque = document.getElementById('featured-grid');
+            
+            // Monta Vitrine Geral
+            gridGeral.innerHTML = produtosDB.map(p => gerarProductCard(p)).join('');
+            
+            // Monta Vitrine Home (Apenas itens marcados como destaque)
+            gridDestaque.innerHTML = produtosDB.filter(p => p.destaque).map(p => gerarProductCard(p)).join('');
+        }
+
+        // Sistema de Busca e Filtro Conjugado
+        function filtrarCategoria(cat) {
+            categoriaAtual = cat;
+            document.querySelectorAll('.cat-btn').forEach(btn => {
+                btn.classList.remove('bg-blue-600', 'text-white');
+                btn.classList.add('bg-gray-100', 'text-gray-600');
+            });
+            event.target.classList.remove('bg-gray-100', 'text-gray-600');
+            event.target.classList.add('bg-blue-600', 'text-white');
+            filtrarProdutos();
+        }
+
+        function filtrarProdutos() {
+            const termoBusca = document.getElementById('search-input').value.toLowerCase();
+            const produtosFiltrados = produtosDB.filter(p => {
+                const correspondeCat = (categoriaAtual === 'todos' || p.categoria === categoriaAtual);
+                const correspondeBusca = p.nome.toLowerCase().includes(termoBusca) || p.desc.toLowerCase().includes(termoBusca);
+                return correspondeCat && correspondeBusca;
+            });
+            
+            const gridGeral = document.getElementById('products-grid');
+            if(produtosFiltrados.length === 0) {
+                gridGeral.innerHTML = `<div class="col-span-full text-center py-12 text-gray-400"><i class="fa-solid fa-box-open text-4xl mb-2"></i><p>Nenhum produto encontrado.</p></div>`;
+            } else {
+                gridGeral.innerHTML = produtosFiltrados.map(p => gerarProductCard(p)).join('');
+            }
+        }
+
+        // Gerenciamento de Estado do Carrinho
+        function adicionarAoCarrinho(id) {
+            const itemExistente = carrinho.find(item => item.id === id);
+            if(itemExistente) {
+                itemExistente.qtd++;
+            } else {
+                carrinho.push({ id: id, qtd: 1 });
+            }
+            atualizarBadgeCarrinho();
+            
+            // Feedback Visual Rápido toast-like
+            const alertBox = document.createElement('div');
+            alertBox.className = "fixed bottom-5 right-5 bg-gray-900 text-white px-6 py-3 rounded-xl shadow-2xl flex items-center gap-3 z-50 animate-bounce";
+            alertBox.innerHTML = `<i class="fa-solid fa-circle-check text-green-400"></i> <span class="text-sm font-semibold">Produto adicionado ao carrinho!</span>`;
+            document.body.appendChild(alertBox);
+            setTimeout(() => alertBox.remove(), 2000);
+        }
+
+        function alterarQuantidade(id, delta) {
+            const item = carrinho.find(item => item.id === id);
+            if(item) {
+                item.qtd += delta;
+                if(item.qtd <= 0) {
+                    carrinho = carrinho.filter(i => i.id !== id);
+                }
+                atualizarBadgeCarrinho();
+                renderizarCarrinho();
+            }
+        }
+
+        function removerDoCarrinho(id) {
+            carrinho = carrinho.filter(i => i.id !== id);
+            atualizarBadgeCarrinho();
+            renderizarCarrinho();
+        }
+
+        function atualizarBadgeCarrinho() {
+            const totalItens = carrinho.reduce((acc, item) => acc + item.qtd, 0);
+            const badge = document.getElementById('cart-count');
+            if(totalItens > 0) {
+                badge.innerText = totalItens;
+                badge.classList.remove('hidden');
+            } else {
+                badge.classList.add('hidden');
+            }
+        }
+
+        // Renderização Dinâmica e Cálculos do Carrinho de Compras
+        function renderizarCarrinho() {
+            const wrapper = document.getElementById('cart-wrapper');
+            const containerItens = document.getElementById('cart-items-container');
+            const containerResumo = document.getElementById('cart-summary');
+
+            if(carrinho.length === 0) {
+                wrapper.innerHTML = `
+                    <div class="col-span-full text-center py-16 bg-white rounded-2xl border border-gray-100 space-y-4">
+                        <div class="text-gray-300 text-6xl"><i class="fa-solid fa-basket-shopping"></i></div>
+                        <h3 class="text-xl font-bold text-gray-900">Seu carrinho está vazio</h3>
+                        <p class="text-gray-500 max-w-xs mx-auto text-sm">Explore nossa vitrine de eletrônicos e encontre ofertas exclusivas com frete rápido.</p>
+                        <button onclick="navigateTo('produtos')" class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-6 py-2.5 rounded-xl transition text-sm">Ir para as Compras</button>
+                    </div>
+                `;
+                return;
+            }
+
+            // Restaura estrutura padrão caso estivesse vazio
+            wrapper.innerHTML = `
+                <div class="lg:col-span-2 space-y-4" id="cart-items-container"></div>
+                <div id="cart-summary" class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm h-fit space-y-6"></div>
+            `;
+
+            let subtotal = 0;
+            let htmlItens = '';
+
+            carrinho.forEach(item => {
+                const produto = produtosDB.find(p => p.id === item.id);
+                const totalItem = produto.preco * item.qtd;
+                subtotal += totalItem;
+
+                htmlItens += `
+                    <div class="bg-white p-4 rounded-2xl border border-gray-100 flex items-center justify-between gap-4 shadow-sm">
+                        <div class="flex items-center gap-4">
+                            <img src="${produto.img}" alt="${produto.nome}" class="w-20 h-20 object-cover rounded-xl bg-gray-50 flex-shrink-0">
+                            <div>
+                                <h4 class="font-bold text-gray-950 text-sm sm:text-base">${produto.nome}</h4>
+                                <p class="text-xs text-gray-400 mb-1">${produto.categoria}</p>
+                                <p class="text-blue-600 font-bold text-sm">R$ ${produto.preco.toFixed(2).replace('.',',')}</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <div class="flex items-center bg-gray-100 rounded-lg overflow-hidden">
+                                <button onclick="alterarQuantidade(${produto.id}, -1)" class="px-2.5 py-1 hover:bg-gray-200 transition text-sm font-bold">-</button>
+                                <span class="px-3 text-sm font-bold">${item.qtd}</span>
+                                <button onclick="alterarQuantidade(${produto.id}, 1)" class="px-2.5 py-1 hover:bg-gray-200 transition text-sm font-bold">+</button>
+                            </div>
+                            <button onclick="removerDoCarrinho(${produto.id})" class="text-gray-400 hover:text-red-500 transition text-lg p-1"><i class="fa-solid fa-trash-can"></i></button>
+                        </div>
+                    </div>
+                `;
+            });
+
+            document.getElementById('cart-items-container').innerHTML = htmlItens;
+
+            const frete = subtotal > 250 ? 0 : 19.90;
+            const totalGeral = subtotal + frete;
+
+            document.getElementById('cart-summary').innerHTML = `
+                <h3 class="font-black text-lg text-gray-900 border-b border-gray-100 pb-3">Resumo do Pedido</h3>
+                <div class="space-y-3 text-sm font-medium">
+                    <div class="flex justify-between text-gray-500"><span>Subtotal</span><span>R$ ${subtotal.toFixed(2).replace('.',',')}</span></div>
+                    <div class="flex justify-between text-gray-500"><span>Frete</span><span>${frete === 0 ? '<span class="text-green-600 font-bold">Grátis</span>' : 'R$ ' + frete.toFixed(2).replace('.',',')}</span></div>
+                    <div class="flex justify-between text-base font-black text-gray-900 border-t border-gray-100 pt-3"><span>Total</span><span>R$ ${totalGeral.toFixed(2).replace('.',',')}</span></div>
+                </div>
+                <button onclick="abrirCheckoutForm()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold p-3.5 rounded-xl transition text-center block shadow-lg shadow-blue-100 text-sm">Fechar Pedido</button>
+            `;
+        }
+
+        // Fluxo de Compra Final: Tela de Entrega/Pagamento (Checkout)
+        function abrirCheckoutForm() {
+            const containerItens = document.getElementById('cart-items-container');
+            containerItens.innerHTML = `
+                <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm space-y-6">
+                    <h3 class="text-lg font-bold text-gray-900 border-b border-gray-100 pb-2"><i class="fa-solid fa-truck-ramp-box text-blue-600 mr-2"></i>Dados de Entrega</h3>
+                    <form id="checkout-form" onsubmit="processarCompraFinal(event)" class="space-y-4 text-sm font-medium">
+                        <div class="grid grid-cols-3 gap-4">
+                            <div class="col-span-2 flex flex-col gap-1">
+                                <label class="text-xs text-gray-500">Rua / Logradouro</label>
+                                <input type="text" required placeholder="Av. Paulista" class="bg-gray-50 p-2.5 rounded-lg border-none outline-none focus:ring-2 focus:ring-blue-500">
+                            </div>
+                            <div class="flex flex-col gap-1">
+                                <label class="text-xs text-gray-500">Número</label>
+                                <input type="text" required placeholder="1000" class="bg-gray-50 p-2.5 rounded-lg border-none outline-none focus:ring-2 focus:ring-blue-500">
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="flex flex-col gap-1">
+                                <label class="text-xs text-gray-500">CEP</label>
+                                <input type="text" required placeholder="01310-100" class="bg-gray-50 p-2.5 rounded-lg border-none outline-none focus:ring-2 focus:ring-blue-500">
+                            </div>
+                            <div class="flex flex-col gap-1">
+                                <label class="text-xs text-gray-500">Cidade / Estado</label>
+                                <input type="text" required placeholder="São Paulo - SP" class="bg-gray-50 p-2.5 rounded-lg border-none outline-none focus:ring-2 focus:ring-blue-500">
+                            </div>
+                        </div>
+                        <h3 class="text-lg font-bold text-gray-900 border-b border-gray-100 pt-4 pb-2"><i class="fa-solid fa-credit-card text-blue-600 mr-2"></i>Forma de Pagamento</h3>
+                        <div class="grid grid-cols-3 gap-3 text-center">
+                            <label class="border-2 border-blue-600 rounded-xl p-3 cursor-pointer block bg-blue-5/10">
+                                <input type="radio" name="pay" checked class="hidden">
+                                <i class="fa-solid fa-pix text-emerald-500 text-lg block mb-1"></i>
+                                <span class="text-xs font-bold">Pix (-5%)</span>
+                            </label>
+                            <label class="border border-gray-200 hover:border-blue-500 rounded-xl p-3 cursor-pointer block">
+                                <input type="radio" name="pay" class="hidden">
+                                <i class="fa-solid fa-credit-card text-blue-500 text-lg block mb-1"></i>
+                                <span class="text-xs font-bold">Cartão</span>
+                            </label>
+                            <label class="border border-gray-200 hover:border-blue-500 rounded-xl p-3 cursor-pointer block">
+                                <input type="radio" name="pay" class="hidden">
+                                <i class="fa-solid fa-barcode text-gray-600 text-lg block mb-1"></i>
+                                <span class="text-xs font-bold">Boleto</span>
+                            </label>
+                        </div>
+                        <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold p-3.5 rounded-xl shadow-lg transition mt-4 text-sm">Concluir Transação</button>
+                    </form>
+                </div>
+            `;
+            // Altera botão de resumo lateral para evitar cliques duplicados redundantes
+            document.getElementById('cart-summary').querySelector('button').remove();
+        }
+
+        function processarCompraFinal(e) {
+            e.preventDefault();
+            alert("✨ Pedido gerado com sucesso! Código de rastreamento enviado via e-mail corporativo simulado.");
+            carrinho = [];
+            atualizarBadgeCarrinho();
+            navigateTo('home');
+        }
+
+        // Sistema de Accordion (FAQ)
+        function toggleFaq(id) {
+            const el = document.getElementById(`faq-${id}`);
+            el.classList.toggle('hidden');
+        }
+
+        // Trigger Inicial no Carregamento do Dom
+        window.onload = inicializarCatalogo;
+    </script>
+</body>
+</html>
